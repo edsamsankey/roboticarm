@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<robot name="arduinobot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- World link -->
+  <link name="world"/>
+
+  <!-- Base link -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://arduinobot_description/meshes/basement.STL" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- Fixed joint: world to base_link -->
+  <joint name="world_to_base" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+  </joint>
+
+  <!-- Base Plate -->
+  <link name="base_plate">
+    <visual>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://arduinobot_description/meshes/base_plate.STL" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="base_to_plate" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_plate"/>
+  </joint>
+
+  <!-- Vertical Drive Arm -->
+  <link name="vertical_drive_arm">
+    <visual>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://arduinobot_description/meshes/vertical_drive_arm.STL" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="plate_to_vertical" type="revolute">
+    <parent link="base_plate"/>
+    <child link="vertical_drive_arm"/>
+    <axis xyz="0 0 1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <limit lower="-1.57" upper="1.57" effort="50" velocity="1"/>
+  </joint>
+
+  <!-- Horizontal Arm -->
+  <link name="horizontal_arm">
+    <visual>
+      <origin xyz="0 0 0.2" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://arduinobot_description/meshes/horizontal_arm.STL" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="vertical_to_horizontal" type="revolute">
+    <parent link="vertical_drive_arm"/>
+    <child link="horizontal_arm"/>
+    <axis xyz="0 1 0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <limit lower="-1.57" upper="1.57" effort="50" velocity="1"/>
+  </joint>
+
+  <!-- Forward Drive Arm -->
+  <link name="forward_drive_arm">
+    <visual>
+      <origin xyz="0.15 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://arduinobot_description/meshes/forward_drive_arm.STL" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="horizontal_to_forward" type="revolute">
+    <parent link="horizontal_arm"/>
+    <child link="forward_drive_arm"/>
+    <axis xyz="0 1 0"/>
+    <origin xyz="0.1 0 0" rpy="0 0 0"/>
+    <limit lower="-1.57" upper="1.57" effort="50" velocity="1"/>
+  </joint>
+
+  <!-- Claw Support -->
+  <link name="claw_support">
+    <visual>
+      <origin xyz="0.05 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://arduinobot_description/meshes/claw_support.STL" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="forward_to_claw" type="fixed">
+    <parent link="forward_drive_arm"/>
+    <child link="claw_support"/>
+  </joint>
+
+  <!-- Fingers -->
+  <link name="left_finger">
+    <visual>
+      <origin xyz="0.02 0.02 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://arduinobot_description/meshes/left_finger.STL" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="claw_to_left_finger" type="revolute">
+    <parent link="claw_support"/>
+    <child link="left_finger"/>
+    <axis xyz="0 0 1"/>
+    <origin xyz="0.02 0.02 0" rpy="0 0 0"/>
+    <limit lower="0" upper="0.04" effort="10" velocity="0.5"/>
+  </joint>
+
+  <link name="right_finger">
+    <visual>
+      <origin xyz="0.02 -0.02 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://arduinobot_description/meshes/right_finger.STL" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="claw_to_right_finger" type="revolute">
+    <parent link="claw_support"/>
+    <child link="right_finger"/>
+    <axis xyz="0 0 1"/>
+    <origin xyz="0.02 -0.02 0" rpy="0 0 0"/>
+    <limit lower="0" upper="0.04" effort="10" velocity="0.5"/>
+  </joint>
+
+</robot>
