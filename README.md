@@ -1,4 +1,4 @@
-# Arduinobot - ROS 2 Humble Robotic Arm Simulation
+# ROS 2 Humble Robotic Arm Simulation
 
 This repository contains the URDF/Xacro model of the Arduinobot robotic arm and the required launch files for visualization in **RViz2** using ROS 2 Humble.
 
